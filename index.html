@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Trivia</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="assets/javascript/app.js"></script>
+    
+  </head>
+
+  <body>
+    <div class="container">                 <!-- container -->
+
+      <div class="row">                     <!-- row one -->
+
+        <div class="col-sm-12">
+          <h1> Totally Trivial Trivia </h1>
+        </div>
+
+      </div>                                <!-- row one -->
+
+      <div class="row">                     <!-- row two -->
+
+        <div class="col-sm-12">
+          <div class="row jumbotron" id="score-area">
+            <h3> Score </h3>
+            <p> Correct: <span id="correct-text"></span></p>
+            <p> Incorrect: <span id="incorrect-text"></span></p>
+            <p> Unanswered: <span id="unanswered-text"></span></p>
+          </div>
+        </div>
+
+      </div>                                <!-- row two  -->
+
+      <div class="row">                     <!-- row three -->
+
+        <!-- Question Area -->
+        <div class="col-sm-9">
+          <div class="row">
+            <div class="jumbotron container-fluid" id="question-answer-area">
+              <!-- build using jquery -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Count Down Area -->
+        <div class="col-sm-3">
+          <div class="row">
+            <div class="jumbotron container-fluid" id="count-down">
+              <!-- build using jquery -->
+            </div>
+          </div>
+        </div>
+
+      </div>                                <!-- row three -->
+
+    </div>                                  <!-- container -->
+
+  </body>
+</html>
