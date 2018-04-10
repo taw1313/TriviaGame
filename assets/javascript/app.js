@@ -1,6 +1,5 @@
 // Global variables
 var questionsAnswers = [];
-//
 questionsAnswers.push({question: "what is this question 1?", 
                        possibleAnswers: ["Answer A", 
                                          "Answer B", 
@@ -46,17 +45,23 @@ var responseTimerId;
 var showAnswerTimer = 10;
 var showAnswerTimerId;
 
+//------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------
 function initGame() {
   correct = 0;
   incorrect = 0;
   unanswered = 0;
 }
 
+//------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------
 function resetTimers() {
-  responseTimer = 60;
+  responseTimer = 20;
   showAnswerTimer = 10;
 }
 
+//------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------
 $(document).ready(function() {
   //------------------------------------------------------------------------------------
   // find all DOM references 
@@ -129,6 +134,8 @@ $(document).ready(function() {
     jq_newTimeLeft.text( timeToTimeStr( responseTimer ) );
   }
 
+//------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------
   function runTimer() {
     clearInterval(responseTimerId);
     responseTimerId = setInterval(decrement, 1000);
@@ -145,11 +152,15 @@ $(document).ready(function() {
     }
   }
 
+  //------------------------------------------------------------------------------------
+  //------------------------------------------------------------------------------------
   function waitThenReset() {
     clearInterval(showAnswerTimerId);
     responseTimerId = setInterval(reduceAnswerTimer, 1000);
   }
 
+  //------------------------------------------------------------------------------------
+  //------------------------------------------------------------------------------------
   function reduceAnswerTimer() {
     showAnswerTimer--;
     // timer expired
