@@ -1,40 +1,40 @@
 // Global variables
 var questionsAnswers = [];
-questionsAnswers.push({question: "what is this question 1?", 
-                       possibleAnswers: ["Answer A", 
-                                         "Answer B", 
-                                         "Answer C", 
-                                         "Answer D"],
-                       answer: 0,
-                       image: "assets/images/flag.png"});
-questionsAnswers.push({question: "what is this question 2?", 
-                       possibleAnswers: ["Answer A", 
-                                         "Answer B", 
-                                         "Answer C", 
-                                         "Answer D"],
+questionsAnswers.push({question: "Which country has this flag?", 
+                       possibleAnswers: ["Scottland", 
+                                         "Norway", 
+                                         "Denmark", 
+                                         "Wales"],
+                       answer: 3,
+                       image: "assets/images/wales.png"});
+questionsAnswers.push({question: "Which country has this flag?", 
+                       possibleAnswers: ["Taiwan", 
+                                         "South Korea", 
+                                         "Philippines", 
+                                         "Thailand"],
                        answer: 1,
-                       image: "assets/images/flag.png"});
-//questionsAnswers.push({question: "what is this question 3?", 
-//                       possibleAnswers: ["Answer A", 
-//                                         "Answer B", 
-//                                         "Answer C", 
-//                                         "Answer D"],
-//                       answer: 2,
-//                       image: "assets/images/flag.png"});
-//questionsAnswers.push({question: "what is this question 4?", 
-//                       possibleAnswers: ["Answer A", 
-//                                         "Answer B", 
-//                                         "Answer C", 
-//                                         "Answer D"],
-//                       answer: 3,
-//                       image: "assets/images/flag.png"});
-//questionsAnswers.push({question: "what is this question 5?", 
-//                       possibleAnswers: ["Answer A", 
-//                                         "Answer B", 
-//                                         "Answer C", 
-//                                         "Answer D"],
-//                       answer: 2,
-//                       image: "assets/images/flag.png"});
+                       image: "assets/images/korea.png"});
+questionsAnswers.push({question: "Which country has this flag?", 
+                       possibleAnswers: ["Tanzania", 
+                                         "Sudan", 
+                                         "Kenya", 
+                                         "Zambia"],
+                       answer: 2,
+                       image: "assets/images/kenya.png"});
+questionsAnswers.push({question: "Which country has this flag?", 
+                       possibleAnswers: ["New Delhi", 
+                                         "Nepal", 
+                                         "Bhutan", 
+                                         "Bangladesh"],
+                       answer: 1,
+                       image: "assets/images/nepal.png"});
+questionsAnswers.push({question: "Which country has this flag?", 
+                       possibleAnswers: ["Canada", 
+                                         "Greenland", 
+                                         "Norway", 
+                                         "Cuba"],
+                       answer: 0,
+                       image: "assets/images/canada.png"});
  
 var questionNumber = 0;
 var correct = 0;
@@ -44,7 +44,7 @@ var responseTimer = 10;
 var responseTimerId;
 var showAnswerTimer = 5;
 var showAnswerTimerId;
-var showEndTimer = 5;
+var showEndTimer = 15;
 var showEndTimerId;
 
 //------------------------------------------------------------------------------------
@@ -61,7 +61,7 @@ function initGame() {
 function resetTimers() {
   responseTimer = 10;
   showAnswerTimer = 5;
-  showEndTimer = 5;
+  showEndTimer = 15;
 }
 
 //------------------------------------------------------------------------------------
@@ -94,11 +94,22 @@ $(document).ready(function() {
   function buildQuestionAnswers(index) {
     
     var jq_newQuestionDiv = $("<div>");
-    jq_newQuestionDiv.addClass("row col-sm-11");
+    jq_newQuestionDiv.addClass("row");
 
+    var jq_newQuestionDiv2 = $("<div>");
+    jq_newQuestionDiv2.addClass("col-sm-2");
+
+    var jq_newQuestionImg = $("<img>");
+    jq_newQuestionImg.addClass("img-responsive");
+    jq_newQuestionImg.attr("src",questionsAnswers[questionNumber].image);
+    jq_newQuestionImg.attr("alt", "response image");
+    jq_newQuestionDiv2.append( jq_newQuestionImg );
+
+    var jq_newQuestionDiv3 = $("<div>");
+    jq_newQuestionDiv3.addClass("col-sm-offset-1 col-sm-9");
     var jq_newQuestionTxt = $("<h2>");
     jq_newQuestionTxt.text(questionsAnswers[index].question);
-    jq_newQuestionDiv.append( jq_newQuestionTxt );
+    jq_newQuestionDiv3.append( jq_newQuestionTxt );
 
     for (var i=0; i<questionsAnswers[index].possibleAnswers.length; i++) {
       var jq_newPossibleTxt = $("<p>");
@@ -106,8 +117,11 @@ $(document).ready(function() {
       jq_newPossibleTxt.attr("id", i);
       jq_newPossibleTxt.attr("style", "cursor:pointer;");
       jq_newPossibleTxt.text(questionsAnswers[index].possibleAnswers[i]);
-      jq_newQuestionDiv.append( jq_newPossibleTxt );
+      jq_newQuestionDiv3.append( jq_newPossibleTxt );
     }
+
+    jq_newQuestionDiv.append( jq_newQuestionDiv2 );
+    jq_newQuestionDiv.append( jq_newQuestionDiv3 );
 
     return jq_newQuestionDiv;
   }
