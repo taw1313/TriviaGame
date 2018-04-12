@@ -14,40 +14,43 @@ questionsAnswers.push({question: "what is this question 2?",
                                          "Answer D"],
                        answer: 1,
                        image: "assets/images/flag.png"});
-questionsAnswers.push({question: "what is this question 3?", 
-                       possibleAnswers: ["Answer A", 
-                                         "Answer B", 
-                                         "Answer C", 
-                                         "Answer D"],
-                       answer: 2,
-                       image: "assets/images/flag.png"});
-questionsAnswers.push({question: "what is this question 4?", 
-                       possibleAnswers: ["Answer A", 
-                                         "Answer B", 
-                                         "Answer C", 
-                                         "Answer D"],
-                       answer: 3,
-                       image: "assets/images/flag.png"});
-questionsAnswers.push({question: "what is this question 5?", 
-                       possibleAnswers: ["Answer A", 
-                                         "Answer B", 
-                                         "Answer C", 
-                                         "Answer D"],
-                       answer: 4,
-                       image: "assets/images/flag.png"});
+//questionsAnswers.push({question: "what is this question 3?", 
+//                       possibleAnswers: ["Answer A", 
+//                                         "Answer B", 
+//                                         "Answer C", 
+//                                         "Answer D"],
+//                       answer: 2,
+//                       image: "assets/images/flag.png"});
+//questionsAnswers.push({question: "what is this question 4?", 
+//                       possibleAnswers: ["Answer A", 
+//                                         "Answer B", 
+//                                         "Answer C", 
+//                                         "Answer D"],
+//                       answer: 3,
+//                       image: "assets/images/flag.png"});
+//questionsAnswers.push({question: "what is this question 5?", 
+//                       possibleAnswers: ["Answer A", 
+//                                         "Answer B", 
+//                                         "Answer C", 
+//                                         "Answer D"],
+//                       answer: 2,
+//                       image: "assets/images/flag.png"});
  
 var questionNumber = 0;
 var correct = 0;
 var incorrect = 0;
 var unanswered = 0;
-var responseTimer = 20;
+var responseTimer = 10;
 var responseTimerId;
-var showAnswerTimer = 10;
+var showAnswerTimer = 5;
 var showAnswerTimerId;
+var showEndTimer = 5;
+var showEndTimerId;
 
 //------------------------------------------------------------------------------------
 //------------------------------------------------------------------------------------
 function initGame() {
+  questionNumber = 0;
   correct = 0;
   incorrect = 0;
   unanswered = 0;
@@ -56,8 +59,9 @@ function initGame() {
 //------------------------------------------------------------------------------------
 //------------------------------------------------------------------------------------
 function resetTimers() {
-  responseTimer = 20;
-  showAnswerTimer = 10;
+  responseTimer = 10;
+  showAnswerTimer = 5;
+  showEndTimer = 5;
 }
 
 //------------------------------------------------------------------------------------
@@ -130,14 +134,13 @@ $(document).ready(function() {
 
   //------------------------------------------------------------------------------------
   //------------------------------------------------------------------------------------
-  function updateTimer() {
-    jq_newTimeLeft.text( timeToTimeStr( responseTimer ) );
+  function updateTimer(txtMsg, timeCount) {
+    jq_newTimeLeft.text( txtMsg + " " + timeToTimeStr( timeCount ) );
   }
 
-//------------------------------------------------------------------------------------
-//------------------------------------------------------------------------------------
+  //------------------------------------------------------------------------------------
+  //------------------------------------------------------------------------------------
   function runTimer() {
-    clearInterval(responseTimerId);
     responseTimerId = setInterval(decrement, 1000);
   }
 
@@ -145,26 +148,31 @@ $(document).ready(function() {
   //------------------------------------------------------------------------------------
   function decrement() {
     responseTimer--;
-    updateTimer();
+    updateTimer( "Response", responseTimer );
     // timer expired
-    if ( responseTimer === 0 ) {
+    if ( responseTimer <= 0 ) {
+      clearInterval(responseTimerId);   // Stop timer
       buildResponseArea( -1 );
+    if ( questionNumber >= questionsAnswers.length-1 ) {
+      resetGame();
+    }
     }
   }
 
   //------------------------------------------------------------------------------------
   //------------------------------------------------------------------------------------
-  function waitThenReset() {
-    clearInterval(showAnswerTimerId);
-    responseTimerId = setInterval(reduceAnswerTimer, 1000);
+  function waitThenResetAnswer() {
+    showAnswerTimerId = setInterval(reduceAnswerTimer, 1000);
   }
 
   //------------------------------------------------------------------------------------
   //------------------------------------------------------------------------------------
   function reduceAnswerTimer() {
     showAnswerTimer--;
+    updateTimer( "Answer", showAnswerTimer );
     // timer expired
-    if ( showAnswerTimer === 0 ) {
+    if ( showAnswerTimer <= 0 ) {
+      clearInterval(showAnswerTimerId);   // Stop timer
       jq_QandAarea.empty();
       ++questionNumber;
       if ( questionNumber < questionsAnswers.length ) {
@@ -172,17 +180,55 @@ $(document).ready(function() {
         resetTimers();
         runTimer();
       }
-      else {
-        //END of Game need reset
-      }
     }
   }
 
   //------------------------------------------------------------------------------------
   //------------------------------------------------------------------------------------
-  function questionUnaswered() {
+  function waitThenResetEnd() {
+    showEndTimerId = setInterval(reduceEndTimer, 1000);
   }
-  
+
+  //------------------------------------------------------------------------------------
+  //------------------------------------------------------------------------------------
+  function reduceEndTimer() {
+    showEndTimer--;
+    updateTimer( "End", showEndTimer );
+    // timer expired
+    if ( showEndTimer <= 0 ) {
+      clearInterval(showEndTimerId);   // Stop timer
+      jq_QandAarea.empty();
+      updateStats();
+      jq_QandAarea.append( buildQuestionAnswers( questionNumber ) );
+      resetTimers();
+      runTimer();
+    }
+  }
+
+  //------------------------------------------------------------------------------------
+  //------------------------------------------------------------------------------------
+  function resetGame() {
+
+    console.log("resetGame()" + jq_QandAarea);
+
+    jq_QandAarea.empty();
+    clearInterval(responseTimerId);
+    clearInterval(showAnswerTimerId);
+
+    var jq_newResponseDiv1 = $("<div>");
+    jq_newResponseDiv1.addClass("row col-sm-12");
+
+    var jq_newResponseTxt = $("<h1>");
+    jq_newResponseTxt.text("Game Over");
+    jq_newResponseDiv1.append( jq_newResponseTxt );
+
+    jq_QandAarea.append( jq_newResponseDiv1 );
+    
+    resetTimers();
+    initGame();
+    waitThenResetEnd();
+  }
+
   //------------------------------------------------------------------------------------
   //------------------------------------------------------------------------------------
   function buildResponseArea( id ) {
@@ -191,7 +237,7 @@ $(document).ready(function() {
     var correctAnswer = questionsAnswers[questionNumber].possibleAnswers[correctID];
 
     jq_QandAarea.empty();
-    clearInterval(responseTimerId);
+    clearInterval(responseTimerId);   // stop timer Question and aswer timer
 
     if (id == -1 ) {
       ++unanswered;
@@ -239,7 +285,7 @@ $(document).ready(function() {
     jq_QandAarea.append( jq_newResponseDiv1 );
     jq_QandAarea.append( jq_newResponseDiv2 );
     
-    waitThenReset();
+    waitThenResetAnswer();
   }
 
   //------------------------------------------------------------------------------------
@@ -249,6 +295,10 @@ $(document).ready(function() {
     var id = selectedAnswer.attr('id');
 
     buildResponseArea( id );
+    console.log("determineAnswer() "+ questionsAnswers.length);
+    if ( questionNumber >= questionsAnswers.length-1 ) {
+      resetGame();
+    }
 
   }
 
