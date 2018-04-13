@@ -6,35 +6,35 @@ questionsAnswers.push({question: "Which country has this flag?",
                                          "Denmark", 
                                          "Wales"],
                        answer: 3,
-                       image: "assets/images/wales.png"});
+                       image: "assets/images/wales.PNG"});
 questionsAnswers.push({question: "Which country has this flag?", 
                        possibleAnswers: ["Taiwan", 
                                          "South Korea", 
                                          "Philippines", 
                                          "Thailand"],
                        answer: 1,
-                       image: "assets/images/korea.png"});
+                       image: "assets/images/korea.PNG"});
 questionsAnswers.push({question: "Which country has this flag?", 
                        possibleAnswers: ["Tanzania", 
                                          "Sudan", 
                                          "Kenya", 
                                          "Zambia"],
                        answer: 2,
-                       image: "assets/images/kenya.png"});
+                       image: "assets/images/kenya.PNG"});
 questionsAnswers.push({question: "Which country has this flag?", 
                        possibleAnswers: ["New Delhi", 
                                          "Nepal", 
                                          "Bhutan", 
                                          "Bangladesh"],
                        answer: 1,
-                       image: "assets/images/nepal.png"});
+                       image: "assets/images/nepal.PNG"});
 questionsAnswers.push({question: "Which country has this flag?", 
                        possibleAnswers: ["Canada", 
                                          "Greenland", 
                                          "Norway", 
                                          "Cuba"],
                        answer: 0,
-                       image: "assets/images/canada.png"});
+                       image: "assets/images/canada.PNG"});
  
 var questionNumber = 0;
 var correct = 0;
