@@ -74,16 +74,32 @@ $(document).ready(function() {
   var jq_scoreArea = jq_main.find("#score-area");
   var jq_QandAarea = jq_main.find("#question-answer-area");
   var jq_countDownArea = jq_main.find("#count-down");
-  var jq_correct = jq_scoreArea.find("span#correct-text");
-  var jq_incorrect = jq_scoreArea.find("span#incorrect-text");
-  var jq_unanswered = jq_scoreArea.find("span#unanswered-text");
   var jq_newTimeLeft = $("<h2>");
   jq_newTimeLeft.text( "00:00" );
   jq_countDownArea.append( jq_newTimeLeft );
 
   //------------------------------------------------------------------------------------
   //------------------------------------------------------------------------------------
+  function buildStartGame() {
+    jq_scoreArea.empty();
+    jq_scoreArea.append('<button id="start-game"> Start </button>');
+  }
+
+  //------------------------------------------------------------------------------------
+  //------------------------------------------------------------------------------------
+  function buildScoreArea() {
+    jq_scoreArea.append('<h3> Score </h3>');
+    jq_scoreArea.append('<p> Correct: <span id="correct-text"></span></p>');
+    jq_scoreArea.append('<p> Incorrect: <span id="incorrect-text"></span></p>');
+    jq_scoreArea.append('<p> Unanswered: <span id="unanswered-text"></span></p>');
+  }
+
+  //------------------------------------------------------------------------------------
+  //------------------------------------------------------------------------------------
   function updateStats() {
+    var jq_correct = jq_scoreArea.find("span#correct-text");
+    var jq_incorrect = jq_scoreArea.find("span#incorrect-text");
+    var jq_unanswered = jq_scoreArea.find("span#unanswered-text");
     jq_correct.text(correct);
     jq_incorrect.text(incorrect);
     jq_unanswered.text(unanswered);
@@ -212,10 +228,7 @@ $(document).ready(function() {
     if ( showEndTimer <= 0 ) {
       clearInterval(showEndTimerId);   // Stop timer
       jq_QandAarea.empty();
-      updateStats();
-      jq_QandAarea.append( buildQuestionAnswers( questionNumber ) );
-      resetTimers();
-      runTimer();
+      buildStartGame();
     }
   }
 
@@ -316,11 +329,20 @@ $(document).ready(function() {
 
   }
 
-  initGame();
-  updateStats();
+  //------------------------------------------------------------------------------------
+  //------------------------------------------------------------------------------------
+  function startGame() {
 
-  jq_QandAarea.append( buildQuestionAnswers( questionNumber ) );
-  runTimer();
+    jq_scoreArea.empty();
+    buildScoreArea();
+    initGame();
+    updateStats();
+
+    jq_QandAarea.append( buildQuestionAnswers( questionNumber ) );
+    runTimer();
+  }
+
+  buildStartGame();
 
   //----------------------------------------------------------------------------------
   //  I am building the following child elements that will used to identify the answer
@@ -335,6 +357,7 @@ $(document).ready(function() {
   // question-answer-area which is the ancor and "p.button-answer" is the selector that
   // on() will use 
   //----------------------------------------------------------------------------------
+  $("#score-area").on('click', "button#start-game", startGame);
   $("#question-answer-area").on('click', "p.button-answer", determineAnswer);
 
 
